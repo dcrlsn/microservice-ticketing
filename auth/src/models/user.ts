@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { PasswordManager } from '../services/password-manager'
+import { PasswordManager } from '../utils/password-manager'
 
 interface UserAttrs {
   email: string;
