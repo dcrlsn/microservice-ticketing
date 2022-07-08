@@ -1,35 +1,33 @@
 import { useState } from 'react';
-import axios from 'axios';
+import Router from 'next/router';
 
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import Alert from 'react-bootstrap/Alert';
-import ListGroup from 'react-bootstrap/ListGroup';
+
+import useRequest from '../../hooks/use-request';
 
 export default () => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [errors, setErrors] = useState([]);
+  const { doRequest, errors } = useRequest({
+    url: '/api/users/signup',
+    method: 'post',
+    body: {
+      email,
+      password
+    },
+    onSuccess: () => Router.push('/')
+  })
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const response = await axios.post('/api/users/signup', { email, password })
-    } catch (err) {
-      setErrors(err.response.data.errors)
-    }
+    await doRequest();
   }
 
   return (
     <Form onSubmit={handleSubmit}>
-      {errors.length > 0 && <Alert key='danger' variant='danger'>
-        <h4>Something went wrong...</h4>
-        <ListGroup variant="flush">
-          {errors.map(err => { <ListGroup.Item key={err.message}>{err.message}</ListGroup.Item> }
-          )}
-        </ListGroup>
-      </Alert>}
+      {errors}
       <h1>Sign Up</h1>
       <Form.Group>
         <Form.Label>Email Address</Form.Label>
