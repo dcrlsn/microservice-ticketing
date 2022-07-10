@@ -18,7 +18,7 @@ export default ({ url, method, body, onSuccess }) => {
     } catch (err) {
       setErrors(
         <Alert variant='danger'>
-          <h4>Uh oh...</h4>
+          <Alert.Heading>Uh oh...</Alert.Heading>
           <ListGroup variant="flush">
             {err.response.data.errors.map((err) => (
               <ListGroup.Item key={err.message} variant="danger">{err.message}</ListGroup.Item>
